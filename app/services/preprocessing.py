@@ -101,8 +101,6 @@ class DataProcessor:
         logger.info(f"Registros eliminados: {initial_shape - final_shape}")
         logger.info(f"Registros restantes: {final_shape}")
 
-        print(df_clean.columns)
-
         return df_clean
 
     def filter_cancelled_transactions(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -115,7 +113,6 @@ class DataProcessor:
         Returns:
             pd.DataFrame: DataFrame sin transacciones canceladas
         """
-        print(df.columns)
         initial_shape = df.shape[0]
         cancelled_mask = df['InvoiceNo'].str.startswith('C', na=False)
         cancelled_count = cancelled_mask.sum()
@@ -300,12 +297,12 @@ class DataProcessor:
         }).describe()
         
         quality_metrics = {
-            'total_rows': df.shape[0],
-            'total_columns': df.shape[1],
-            'unique_customers': df['CustomerID'].nunique(),
-            'date_range_days': date_range,
-            'has_duplicates': df.duplicated().sum() > 0,
-            'has_null_customer_id': df['CustomerID'].isnull().sum() > 0,
+            'total_rows': int(df.shape[0]),
+            'total_columns': int(df.shape[1]),
+            'unique_customers': int(df['CustomerID'].nunique()),
+            'date_range_days': int(date_range),
+            'has_duplicates': bool(df.duplicated().sum() > 0),
+            'has_null_customer_id': bool(df['CustomerID'].isnull().sum() > 0),
             'data_quality_score': 100
         }
         
